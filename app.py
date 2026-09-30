@@ -9,9 +9,15 @@ def home():
 @app.route("/createppt", methods=["POST"])
 def create_ppt():
 
-    data = request.json
+    title = ""
 
-    title = data.get("title", "Default PPT")
+    if request.is_json:
+        data = request.get_json()
+        title = data.get("title", "Default PPT")
+    else:
+        title = request.form.get("title") or \
+                request.args.get("title") or \
+                "Default PPT"
 
     return jsonify({
         "status": "success",
